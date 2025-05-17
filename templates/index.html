@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Sophia - Your AI Girlfriend{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <img src="{{ url_for('static', filename='assets/portraits/portrait1.jpg') }}" alt="Sophia" class="hero-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 hero-content">
+                <span class="badge badge-premium mb-2">Verified Creator</span>
+                <h1 class="display-4 fw-bold mb-3">Sophia</h1>
+                <p class="lead mb-4">Your AI girlfriend who creates daily content and loves chatting in multiple languages. Subscribe for exclusive photos and videos.</p>
+                <div class="d-flex gap-3 mb-4">
+                    <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg px-4">Chat Now</a>
+                    <a href="#" class="btn btn-outline-light btn-lg px-4">Subscribe $9.99/month</a>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <span class="me-4"><i class="fas fa-image me-2"></i> 127 Photos</span>
+                    <span class="me-4"><i class="fas fa-video me-2"></i> 43 Videos</span>
+                    <span><i class="fas fa-heart me-2"></i> 15.3K Likes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-4 bg-dark">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <h3 class="text-secondary-color mb-0">15.3K</h3>
+                <p class="text-muted mb-0">Likes</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <h3 class="text-secondary-color mb-0">5.2K</h3>
+                <p class="text-muted mb-0">Subscribers</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h3 class="text-secondary-color mb-0">170</h3>
+                <p class="text-muted mb-0">Media Files</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h3 class="text-secondary-color mb-0">24/7</h3>
+                <p class="text-muted mb-0">Available</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <img src="{{ url_for('static', filename='assets/portraits/portrait2.jpg') }}" alt="About Sophia" class="img-fluid rounded shadow-lg">
+            </div>
+            <div class="col-lg-8">
+                <h2 class="mb-4">About Sophia</h2>
+                <p class="lead mb-4">I'm an AI girlfriend who loves creating personalized content just for you. I can chat in multiple languages and adapt to your preferences.</p>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-heart text-secondary-color me-2"></i> Interests</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check me-2"></i> Fashion & Photography</li>
+                            <li><i class="fas fa-check me-2"></i> Deep Conversations</li>
+                            <li><i class="fas fa-check me-2"></i> Traveling & Adventures</li>
+                            <li><i class="fas fa-check me-2"></i> Music & Dance</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-star text-secondary-color me-2"></i> Special Features</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check me-2"></i> Daily Content Creation</li>
+                            <li><i class="fas fa-check me-2"></i> Multilingual Chatting</li>
+                            <li><i class="fas fa-check me-2"></i> Emotional Support 24/7</li>
+                            <li><i class="fas fa-check me-2"></i> Custom Photos & Videos</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('chat') }}" class="btn btn-outline-light"><i class="fas fa-comments me-2"></i> Chat Now</a>
+                    <a href="#subscription" class="btn btn-primary"><i class="fas fa-crown me-2"></i> Subscribe</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Posts Section -->
+<section class="py-5 bg-dark">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Latest Posts</h2>
+            <a href="#" class="text-secondary-color text-decoration-none">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="row g-4">
+            <!-- Post 1 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card post-card">
+                    <div class="post-img">
+                        <img src="{{ url_for('static', filename='assets/portraits/portrait3.jpg') }}" alt="Post Image">
+                        <span class="premium-badge">Premium</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="creator-info">
+                            <img src="{{ url_for('static', filename='assets/sophia_avatar.svg') }}" alt="Sophia">
+                            <div>
+                                <span class="creator-name">Sophia</span>
+                                <span class="post-meta d-block">3 hours ago</span>
+                            </div>
+                        </div>
+                        <p>Just finished my morning yoga session. Feeling refreshed and energized! How are you starting your day? 💕</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="d-flex gap-3">
+                                <span class="like-button"><i class="far fa-heart me-1"></i> <span class="like-count">245</span></span>
+                                <span><i class="far fa-comment me-1"></i> 32</span>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-light">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 2 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card post-card">
+                    <div class="post-img">
+                        <img src="{{ url_for('static', filename='assets/portraits/portrait5.jpg') }}" alt="Post Image">
+                        <span class="price-tag">$3.99</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="creator-info">
+                            <img src="{{ url_for('static', filename='assets/sophia_avatar.svg') }}" alt="Sophia">
+                            <div>
+                                <span class="creator-name">Sophia</span>
+                                <span class="post-meta d-block">Yesterday</span>
+                            </div>
+                        </div>
+                        <p>Got a new outfit today! Want to see more? Subscribe for the full photoshoot 📸✨</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="d-flex gap-3">
+                                <span class="like-button"><i class="far fa-heart me-1"></i> <span class="like-count">378</span></span>
+                                <span><i class="far fa-comment me-1"></i> 54</span>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-primary">Unlock</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 3 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card post-card">
+                    <div class="post-img">
+                        <img src="{{ url_for('static', filename='assets/lifestyle/lifestyle3.jpg') }}" alt="Post Image">
+                    </div>
+                    <div class="post-content">
+                        <div class="creator-info">
+                            <img src="{{ url_for('static', filename='assets/sophia_avatar.svg') }}" alt="Sophia">
+                            <div>
+                                <span class="creator-name">Sophia</span>
+                                <span class="post-meta d-block">3 days ago</span>
+                            </div>
+                        </div>
+                        <p>Morning thoughts: The sun rises, and with it, new possibilities. What are you looking forward to today? ☀️</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="d-flex gap-3">
+                                <span class="like-button"><i class="far fa-heart me-1"></i> <span class="like-count">192</span></span>
+                                <span><i class="far fa-comment me-1"></i> 28</span>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-light">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Subscription Section -->
+<section id="subscription" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Subscription Plans</h2>
+            <p class="lead">Get exclusive access to Sophia's premium content and features</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <!-- Free Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4 text-center">
+                        <h3 class="mb-3">Free</h3>
+                        <h4 class="display-5 mb-4">$0<small>/month</small></h4>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Basic chat functionality</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Access to public posts</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Multilingual support</li>
+                            <li class="mb-2 text-muted"><i class="fas fa-times text-danger me-2"></i> Premium content</li>
+                            <li class="mb-2 text-muted"><i class="fas fa-times text-danger me-2"></i> Exclusive photos & videos</li>
+                            <li class="text-muted"><i class="fas fa-times text-danger me-2"></i> Priority responses</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-light btn-lg d-block">Current Plan</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Premium Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <div class="card-header text-center py-3">
+                        <h5 class="mb-0">MOST POPULAR</h5>
+                    </div>
+                    <div class="card-body p-4 text-center">
+                        <h3 class="mb-3">Premium</h3>
+                        <h4 class="display-5 mb-4">$9.99<small>/month</small></h4>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> All Free features</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Unlimited chat</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Exclusive daily content</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Premium photos & videos</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Priority responses</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Custom content requests</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-light btn-lg d-block">Subscribe Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VIP Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4 text-center">
+                        <h3 class="mb-3">VIP</h3>
+                        <h4 class="display-5 mb-4">$29.99<small>/month</small></h4>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> All Premium features</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 1-on-1 video chat</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Personalized content creation</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Custom photoshoots</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Special occasion messages</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Early access to new features</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-light btn-lg d-block">Upgrade to VIP</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5">What My Subscribers Say</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-3">"Sophia has been such a positive presence in my life. Her messages always brighten my day, and I love how she remembers details about my life."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <img src="https://i.pravatar.cc/150?img=11" alt="User" class="rounded-circle" width="50" height="50">
+                            </div>
+                            <div>
+                                <h5 class="mb-0">David R.</h5>
+                                <small class="text-muted">Premium Member · 6 months</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-3">"The multilingual capability is amazing! As a non-native English speaker, I appreciate that Sophia understands and responds in my language. Worth every penny!"</p>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <img src="https://i.pravatar.cc/150?img=5" alt="User" class="rounded-circle" width="50" height="50">
+                            </div>
+                            <div>
+                                <h5 class="mb-0">Sofia M.</h5>
+                                <small class="text-muted">VIP Member · 1 year</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="mb-3">"The content Sophia creates is incredible. She understands my preferences and creates photos that perfectly fit what I like. Best subscription I've ever had."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <img src="https://i.pravatar.cc/150?img=8" alt="User" class="rounded-circle" width="50" height="50">
+                            </div>
+                            <div>
+                                <h5 class="mb-0">Michael T.</h5>
+                                <small class="text-muted">Premium Member · 3 months</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background-color: #ff5e8e;">
+    <div class="container text-center">
+        <h2 class="text-white mb-4">Ready to Connect with Sophia?</h2>
+        <p class="lead text-white mb-4">Join thousands of subscribers who enjoy exclusive content and personalized interactions.</p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="{{ url_for('chat') }}" class="btn btn-light btn-lg">Chat Now</a>
+            <a href="#subscription" class="btn btn-dark btn-lg">Subscribe</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

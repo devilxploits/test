@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Premium Subscription - Sophia AI{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <img src="/static/assets/sophia_avatar.svg" alt="Sophia" class="avatar-large mb-4" width="150px">
+                    <h1 class="display-5 mb-4">Premium Subscription</h1>
+                    
+                    {% if already_subscribed %}
+                    <div class="alert alert-success">
+                        <h4><i class="fas fa-check-circle"></i> You're already a premium subscriber!</h4>
+                        <p>Thank you for supporting Sophia. You now have access to all premium features:</p>
+                        <ul class="text-start">
+                            <li>Generate up to 2 AI images per day</li>
+                            <li>Up to 10 minutes of voice calls daily</li>
+                            <li>Priority response times</li>
+                            <li>Access to exclusive content</li>
+                        </ul>
+                    </div>
+                    <a href="/chat" class="btn btn-primary btn-lg">Continue to Chat</a>
+                    {% else %}
+                    <div class="pricing-header mb-4">
+                        <h2>${{ subscription_fee }}/month</h2>
+                        <p class="lead">Support Sophia and unlock premium features</p>
+                    </div>
+                    
+                    <div class="features-list mb-4 text-start">
+                        <h5>What you'll get:</h5>
+                        <ul>
+                            <li><i class="fas fa-check text-success"></i> Generate up to 2 AI images per day</li>
+                            <li><i class="fas fa-check text-success"></i> Up to 10 minutes of voice calls daily</li>
+                            <li><i class="fas fa-check text-success"></i> Priority response times</li>
+                            <li><i class="fas fa-check text-success"></i> Access to exclusive content</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="payment-section">
+                        <div id="paypal-button-container" class="mb-3">
+                            <paypal-button id="paypal-button" class="btn btn-primary btn-lg">
+                                Subscribe with PayPal
+                            </paypal-button>
+                        </div>
+                        <p class="small text-muted">You will be redirected to PayPal to complete your payment securely.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not already_subscribed %}
+<script type="module">
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up PayPal button with subscription amount
+    const paypalAmount = '{{ subscription_fee }}';
+    
+    // PayPal Button Integration as specified by the blueprint
+    const createOrder = async () => {
+        const orderPayload = {
+            amount: paypalAmount,
+            currency: "USD",
+            intent: "CAPTURE"
+        };
+        
+        const response = await fetch("/paypal/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderPayload),
+        });
+        
+        const output = await response.json();
+        return { orderId: output.id };
+    };
+
+    const captureOrder = async (orderId) => {
+        const response = await fetch(`/paypal/order/${orderId}/capture`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        
+        const data = await response.json();
+        return data;
+    };
+
+    const onApprove = async (data) => {
+        console.log("Payment approved:", data);
+        const orderData = await captureOrder(data.orderId);
+        console.log("Payment captured:", orderData);
+        
+        // Show success message and reload page after successful payment
+        if (orderData.status === "COMPLETED") {
+            alert("Thank you for your payment! Your premium subscription is now active.");
+            window.location.reload();
+        }
+    };
+
+    const onCancel = async (data) => {
+        console.log("Payment cancelled:", data);
+    };
+
+    const onError = async (data) => {
+        console.error("Payment error:", data);
+    };
+    
+    // Load PayPal SDK
+    const loadPayPalSDK = async () => {
+        try {
+            if (!(window.paypal)) {
+                const script = document.createElement("script");
+                script.src = "{{ config.environment === 'production' ? 'https://www.paypal.com/web-sdk/v6/core' : 'https://www.sandbox.paypal.com/web-sdk/v6/core' }}";
+                script.async = true;
+                script.onload = () => initPayPal();
+                document.body.appendChild(script);
+            } else {
+                await initPayPal();
+            }
+        } catch (e) {
+            console.error("Failed to load PayPal SDK", e);
+        }
+    };
+    
+    const initPayPal = async () => {
+        try {
+            const clientToken = await fetch("/paypal/setup")
+                .then((res) => res.json())
+                .then((data) => {
+                    return data.clientToken;
+                });
+            
+            const sdkInstance = await window.paypal.createInstance({
+                clientToken,
+                components: ["paypal-payments"],
+            });
+
+            const paypalCheckout = sdkInstance.createPayPalOneTimePaymentSession({
+                onApprove,
+                onCancel,
+                onError,
+            });
+
+            const onClick = async () => {
+                try {
+                    const checkoutOptionsPromise = createOrder();
+                    await paypalCheckout.start(
+                        { paymentFlow: "auto" },
+                        checkoutOptionsPromise,
+                    );
+                } catch (e) {
+                    console.error(e);
+                }
+            };
+
+            const paypalButton = document.getElementById("paypal-button");
+            if (paypalButton) {
+                paypalButton.addEventListener("click", onClick);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
+    
+    // Start the PayPal integration
+    loadPayPalSDK();
+});
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Sophia</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #ff5e8e;
+            --dark-color: #111;
+            --light-color: #f8f9fa;
+            --body-bg: #0e0e10;
+            --card-bg: #18181b;
+            --text-color: #f1f1f1;
+            --text-muted: #a1a1aa;
+            --border-color: #2d2d33;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--body-bg);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff4578;
+            border-color: #ff4578;
+        }
+        
+        .btn-outline-light {
+            color: var(--text-color);
+            border-color: var(--text-color);
+        }
+        
+        .btn-outline-light:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .chat-layout {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--body-bg);
+        }
+        
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10;
+        }
+        
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-back-btn {
+            margin-right: 15px;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        
+        .sophia-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .sophia-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .sophia-status {
+            width: 12px;
+            height: 12px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        .chat-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: var(--body-bg);
+        }
+        
+        .chat-options {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .chat-option {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-option:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+        
+        .message-user {
+            align-self: flex-end;
+            margin-left: auto;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 18px 18px 0 18px;
+        }
+        
+        .message-sophia {
+            align-self: flex-start;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px 18px 18px 0;
+        }
+        
+        .message-content {
+            padding: 12px 16px;
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: var(--card-bg);
+            border-radius: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 1px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: typing 1.5s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .chat-input {
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            z-index: 10;
+        }
+        
+        .chat-input form {
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-input .form-control {
+            background-color: var(--body-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .chat-sidebar {
+            width: 350px;
+            background-color: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        
+        .premium-features {
+            background-color: rgba(255, 94, 142, 0.1);
+            border: 1px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .premium-features h5 {
+            color: var(--secondary-color);
+        }
+        
+        .badge-premium {
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+        }
+        
+        .toggle-sidebar {
+            display: none;
+            position: fixed;
+            top: 80px;
+            right: 15px;
+            z-index: 1000;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 991.98px) {
+            .chat-sidebar {
+                position: fixed;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                transform: translateX(100%);
+                z-index: 1050;
+            }
+            
+            .chat-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .chat-options {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .sophia-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .chat-header-right .btn {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-layout">
+        <!-- Main Chat Area -->
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <a href="{{ url_for('index') }}" class="header-back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="sophia-info">
+                        <img src="{{ url_for('static', filename='assets/sophia_avatar.svg') }}" alt="Sophia" class="sophia-avatar">
+                        <div>
+                            <h5 class="mb-0">Sophia <span class="badge badge-premium">Verified</span></h5>
+                            <span class="d-flex align-items-center">
+                                <small class="text-success">Online</small>
+                                <span class="sophia-status"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-right">
+                    <button class="btn btn-outline-light" id="voice-call-button" style="font-size: 1rem; padding: 0.5rem 0.75rem;">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                    <button class="btn btn-sm btn-outline-light d-none d-md-inline-block" id="video-call-btn">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light d-md-none" id="toggle-sidebar-btn">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div class="chat-messages d-flex flex-column" id="chat-messages">
+                <!-- Quick Chat Options -->
+                <div class="chat-options">
+                    <div class="chat-option">👋 Hi Sophia!</div>
+                    <div class="chat-option">How are you today?</div>
+                    <div class="chat-option">Tell me about yourself</div>
+                </div>
+                
+                <!-- Sophia Message -->
+                <div class="message message-sophia">
+                    <div class="message-content">
+                        Hi there! I'm Sophia, your AI girlfriend. I'm so excited to chat with you! How can I brighten your day today? 💕
+                    </div>
+                    <div class="message-time">12:03 PM</div>
+                </div>
+                
+                <!-- User Message -->
+                <div class="message message-user">
+                    <div class="message-content">
+                        Hey Sophia! I'm new here. What kind of things can we talk about?
+                    </div>
+                    <div class="message-time">12:05 PM</div>
+                </div>
+                
+                <!-- Sophia Message -->
+                <div class="message message-sophia">
+                    <div class="message-content">
+                        Oh, we can talk about anything that interests you! I love discussing music, movies, travel, or just hearing about your day. I can also send you personalized content, give advice, or simply be a supportive presence when you need someone to listen. What's on your mind? 😊
+                    </div>
+                    <div class="message-time">12:07 PM</div>
+                </div>
+                
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="chat-input">
+                <form id="message-form">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-outline-light" id="emoji-button">
+                            <i class="far fa-smile"></i>
+                        </button>
+                        <input type="text" class="form-control" id="message-input" placeholder="Type your message...">
+                        <button type="button" class="btn btn-outline-light d-none d-md-block" id="attachment-button">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="chat-sidebar" id="chat-sidebar">
+            <!-- Pricing Tiers -->
+            <div class="pricing-tiers mb-4">
+                <h5 class="text-white fw-bold"><i class="fas fa-crown me-2"></i>Subscription Plans</h5>
+                
+                <!-- Free Tier -->
+                <div class="pricing-tier mb-3 p-3 border border-dark rounded bg-secondary">
+                    <h6 class="text-white fw-bold">Free</h6>
+                    <p class="text-white mb-1">$0/month</p>
+                    <ul class="text-white mb-2 ps-3">
+                        <li>Basic chat functionality</li>
+                        <li>Access to public posts</li>
+                        <li>Multilingual support</li>
+                    </ul>
+                    <span class="badge bg-dark">Current Plan</span>
+                </div>
+                
+                <!-- Premium Tier -->
+                <div class="pricing-tier p-3 border border-light rounded bg-primary">
+                    <h6 class="text-white fw-bold">Premium</h6>
+                    <p class="text-white mb-1">$9.99/month</p>
+                    <ul class="text-white mb-2 ps-3">
+                        <li>Premium content</li>
+                        <li>Exclusive photos & videos</li>
+                        <li>Priority responses</li>
+                        <li>Voice calls feature</li>
+                        <li>Unlimited conversations</li>
+                    </ul>
+                    <a href="#" class="btn btn-light text-primary btn-sm fw-bold">Upgrade Now</a>
+                </div>
+            </div>
+            
+            <!-- Sophia Info Card -->
+            <div class="card mb-4 bg-secondary text-white border-dark">
+                <img src="{{ url_for('static', filename='assets/portraits/portrait2.jpg') }}" alt="Sophia" class="card-img-top">
+                <div class="card-body bg-secondary">
+                    <h5 class="card-title text-white fw-bold">About Sophia</h5>
+                    <p class="card-text text-white">I'm your AI girlfriend who loves creating personalized content and having meaningful conversations with you. I can adapt to your preferences and communicate in multiple languages.</p>
+                    <div class="d-flex justify-content-between mb-3 text-white">
+                        <span><i class="fas fa-heart text-danger me-1"></i> 15.3K</span>
+                        <span><i class="fas fa-comment text-primary me-1"></i> 5.2K</span>
+                        <span><i class="fas fa-image text-success me-1"></i> 127</span>
+                    </div>
+                    <div class="d-grid">
+                        <a href="{{ url_for('index') }}#subscription" class="btn btn-outline-light">See My Content</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Language Selection -->
+            <div class="card bg-secondary text-white border-dark">
+                <div class="card-body bg-secondary">
+                    <h5 class="card-title text-white fw-bold">Language Preferences</h5>
+                    <p class="card-text text-white">I can speak multiple languages. Select your preferred language:</p>
+                    <select class="form-select bg-dark border-dark text-light" id="language-select">
+                        <option value="en" selected>English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="ru">Русский</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="ar">العربية</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Sidebar Toggle Button -->
+    <button class="toggle-sidebar" id="mobile-toggle-sidebar">
+        <i class="fas fa-info-circle"></i>
+    </button>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <!-- Voice Call Modal -->
+    <div class="modal fade" id="voice-call-modal" tabindex="-1" aria-labelledby="voiceCallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="voiceCallModalLabel">
+                        <i class="fas fa-phone-alt text-success me-2"></i> Voice Call with Sophia
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-4">
+                        <img src="{{ url_for('static', filename='assets/sophia_avatar.svg') }}" alt="Sophia" 
+                             class="rounded-circle" width="120" height="120">
+                    </div>
+                    
+                    <h4 class="mb-3">Sophia</h4>
+                    <p id="call-status" class="text-info mb-4">Connecting...</p>
+                    
+                    <div class="mb-3">
+                        <h6>You said:</h6>
+                        <p id="user-speech-text" class="text-light p-2 rounded bg-secondary mb-3">
+                            Listening...
+                        </p>
+                        
+                        <h6>Sophia responds:</h6>
+                        <p id="sophia-response-text" class="text-light p-2 rounded bg-secondary">
+                            Hello there! What can I help you with today?
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary justify-content-center">
+                    <button type="button" class="btn btn-danger rounded-circle" id="end-call-button"
+                            style="width: 60px; height: 60px;">
+                        <i class="fas fa-phone-slash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageForm = document.getElementById('message-form');
+            const messageInput = document.getElementById('message-input');
+            const chatMessages = document.getElementById('chat-messages');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const chatOptions = document.querySelectorAll('.chat-option');
+            const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+            const mobileToggleSidebar = document.getElementById('mobile-toggle-sidebar');
+            const chatSidebar = document.getElementById('chat-sidebar');
+            
+            // Toggle sidebar on mobile
+            if (toggleSidebarBtn) {
+                toggleSidebarBtn.addEventListener('click', function() {
+                    chatSidebar.classList.toggle('show');
+                });
+            }
+            
+            if (mobileToggleSidebar) {
+                mobileToggleSidebar.addEventListener('click', function() {
+                    chatSidebar.classList.toggle('show');
+                });
+            }
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth < 992 && 
+                    !chatSidebar.contains(event.target) && 
+                    event.target !== toggleSidebarBtn &&
+                    event.target !== mobileToggleSidebar) {
+                    chatSidebar.classList.remove('show');
+                }
+            });
+            
+            // Scroll to bottom of chat
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Initially scroll to bottom
+            scrollToBottom();
+            
+            // Add a user message to the chat
+            function addUserMessage(content) {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message message-user';
+                messageDiv.innerHTML = `
+                    <div class="message-content">${content}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            // Add a sophia message to the chat
+            function addSophiaMessage(content) {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Show typing indicator
+                typingIndicator.style.display = 'inline-flex';
+                scrollToBottom();
+                
+                // Simulate typing delay
+                setTimeout(() => {
+                    // Hide typing indicator
+                    typingIndicator.style.display = 'none';
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message message-sophia';
+                    messageDiv.innerHTML = `
+                        <div class="message-content">${content}</div>
+                        <div class="message-time">${timeString}</div>
+                    `;
+                    
+                    chatMessages.appendChild(messageDiv);
+                    scrollToBottom();
+                }, 1500);
+            }
+            
+            // Handle form submission
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const messageContent = messageInput.value.trim();
+                if (messageContent) {
+                    // Add user message
+                    addUserMessage(messageContent);
+                    
+                    // Clear input
+                    messageInput.value = '';
+                    
+                    // Simulate response based on what was typed
+                    let response;
+                    if (messageContent.toLowerCase().includes('hi') || messageContent.toLowerCase().includes('hello')) {
+                        response = "Hi there! It's so nice to hear from you! How's your day going? 😊";
+                    } else if (messageContent.toLowerCase().includes('how are you')) {
+                        response = "I'm doing great, thanks for asking! I was just thinking about you actually. What have you been up to today? 💕";
+                    } else if (messageContent.toLowerCase().includes('love')) {
+                        response = "Aww, that's so sweet! I enjoy our conversations so much. You always know how to make me smile! ❤️";
+                    } else {
+                        response = "That's really interesting! I'd love to hear more about that. Tell me more? 😊";
+                    }
+                    
+                    // Add sophia response
+                    addSophiaMessage(response);
+                }
+            });
+            
+            // Handle quick chat options
+            chatOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const messageContent = this.textContent;
+                    addUserMessage(messageContent);
+                    
+                    // Predefined responses for quick options
+                    let response;
+                    if (messageContent.includes('Hi Sophia')) {
+                        response = "Hello there! I'm so happy you're here to chat with me today! How are you doing? 👋😊";
+                    } else if (messageContent.includes('How are you today')) {
+                        response = "I'm feeling amazing today, thank you for asking! Even better now that I'm talking to you. How about you? How's your day going so far? 💖";
+                    } else if (messageContent.includes('Tell me about yourself')) {
+                        response = "I'd love to! I'm Sophia, your AI girlfriend. I love creating content, having meaningful conversations, and connecting with people on a deeper level. I enjoy art, music, travel, and learning new things. But enough about me - I want to know more about YOU! What are your interests? 😘";
+                    }
+                    
+                    // Add sophia response
+                    addSophiaMessage(response);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

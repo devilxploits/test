@@ -1,0 +1,2340 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Sophia{% endblock %}
+
+{% block additional_css_inline %}
+.admin-container {
+    padding: 40px 0;
+}
+
+.sidebar {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    height: 100%;
+    border: 1px solid var(--border-color);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 5px;
+}
+
+.sidebar-menu li a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.sidebar-menu li a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.content-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 25px;
+    height: 100%;
+    border: 1px solid var(--border-color);
+}
+
+.section-title {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-card {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-card .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.stat-card .stat-icon.subscribers {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+}
+
+.stat-card .stat-icon.messages {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.stat-card .stat-icon.content {
+    background-color: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+}
+
+.stat-card .stat-icon.revenue {
+    background-color: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+.content-post {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.content-post:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.content-post .post-title {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.content-post .post-meta {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+.content-post .post-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.range-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #444;
+    outline: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    cursor: pointer;
+}
+
+.range-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    cursor: pointer;
+}
+
+.settings-section {
+    margin-bottom: 30px;
+}
+
+.nav-tabs .nav-link {
+    color: var(--text-color);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--secondary-color);
+    background-color: transparent;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.tab-content {
+    padding: 20px 0;
+}
+
+.conversation-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.conversation-item {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.conversation-item:hover {
+    background-color: rgba(255, 94, 142, 0.1);
+}
+
+.conversation-item.active {
+    background-color: rgba(255, 94, 142, 0.2);
+    border: 1px solid var(--secondary-color);
+}
+
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.conversation-user {
+    font-weight: 600;
+}
+
+.conversation-time {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.conversation-preview {
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.language-badge {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container admin-container">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4 mb-lg-0">
+            <div class="sidebar">
+                <h4 class="mb-4">Admin Dashboard</h4>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="#dashboard" class="active" id="dashboard-tab" role="tab">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#content" id="content-tab" role="tab">
+                            <i class="fas fa-images"></i> Content Manager
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#conversations" id="conversations-tab" role="tab">
+                            <i class="fas fa-comments"></i> Conversations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings" id="settings-tab" role="tab">
+                            <i class="fas fa-cogs"></i> Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#analytics" id="analytics-tab" role="tab">
+                            <i class="fas fa-chart-line"></i> Analytics
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#social" id="social-tab" role="tab">
+                            <i class="fas fa-share-alt"></i> Social Media
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('index') }}">
+                            <i class="fas fa-sign-out-alt"></i> Back to Site
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="col-lg-9">
+            <div class="tab-content">
+                <!-- Dashboard Tab -->
+                <div class="tab-pane fade show active" id="dashboard">
+                    <div class="content-card">
+                        <h2 class="section-title">Dashboard Overview</h2>
+                        
+                        <!-- Stats Row -->
+                        <div class="row">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon subscribers">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <h3>5,238</h3>
+                                    <p>Total Subscribers</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon messages">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <h3>32,614</h3>
+                                    <p>Messages</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon content">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <h3>127</h3>
+                                    <p>Content Posts</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon revenue">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <h3>$12,480</h3>
+                                    <p>Total Revenue</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="mt-4">
+                            <h5 class="mb-3">Recent Activity</h5>
+                            <div class="table-responsive">
+                                <table class="table table-dark">
+                                    <thead>
+                                        <tr>
+                                            <th>Activity</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>New content post created</td>
+                                            <td>Today, 2:30 PM</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Instagram post published</td>
+                                            <td>Today, 12:15 PM</td>
+                                            <td><span class="badge bg-success">Published</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>New subscriber: Michael T.</td>
+                                            <td>Today, 10:45 AM</td>
+                                            <td><span class="badge bg-primary">Premium</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Telegram message scheduled</td>
+                                            <td>Yesterday, 8:30 PM</td>
+                                            <td><span class="badge bg-warning text-dark">Scheduled</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>New conversation started</td>
+                                            <td>Yesterday, 3:20 PM</td>
+                                            <td><span class="badge bg-info">Active</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Manager Tab -->
+                <div class="tab-pane fade" id="content">
+                    <div class="content-card">
+                        <h2 class="section-title">Content Manager</h2>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <button class="btn btn-primary me-2">Create New Post</button>
+                                <button class="btn btn-outline-light">Schedule Post</button>
+                            </div>
+                            <div class="input-group w-auto">
+                                <input type="text" class="form-control bg-dark border-dark text-light" placeholder="Search posts...">
+                                <button class="btn btn-outline-light"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Content Posts -->
+                        <div class="content-post">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-md-3">
+                                    <img src="{{ url_for('static', filename='assets/portraits/portrait3.jpg') }}" alt="Post" class="img-fluid rounded">
+                                </div>
+                                <div class="col-lg-10 col-md-9">
+                                    <h5 class="post-title">Morning Yoga Session</h5>
+                                    <div class="post-meta">
+                                        <span class="me-3"><i class="far fa-calendar me-1"></i> Today, 9:30 AM</span>
+                                        <span class="me-3"><i class="fas fa-heart me-1"></i> 245 likes</span>
+                                        <span><i class="fas fa-comment me-1"></i> 32 comments</span>
+                                    </div>
+                                    <p>Just finished my morning yoga session. Feeling refreshed and energized! How are you starting your day? 💕</p>
+                                    <div class="post-actions">
+                                        <button class="btn btn-sm btn-outline-light"><i class="fas fa-edit me-1"></i> Edit</button>
+                                        <button class="btn btn-sm btn-outline-light"><i class="fas fa-share me-1"></i> Publish</button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash me-1"></i> Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="content-post">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-md-3">
+                                    <img src="{{ url_for('static', filename='assets/portraits/portrait5.jpg') }}" alt="Post" class="img-fluid rounded">
+                                </div>
+                                <div class="col-lg-10 col-md-9">
+                                    <h5 class="post-title">New Outfit Photoshoot</h5>
+                                    <div class="post-meta">
+                                        <span class="me-3"><i class="far fa-calendar me-1"></i> Yesterday</span>
+                                        <span class="me-3"><i class="fas fa-heart me-1"></i> 378 likes</span>
+                                        <span><i class="fas fa-comment me-1"></i> 54 comments</span>
+                                    </div>
+                                    <p>Got a new outfit today! Want to see more? Subscribe for the full photoshoot 📸✨</p>
+                                    <div class="post-actions">
+                                        <button class="btn btn-sm btn-outline-light"><i class="fas fa-edit me-1"></i> Edit</button>
+                                        <button class="btn btn-sm btn-outline-light"><i class="fas fa-share me-1"></i> Publish</button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash me-1"></i> Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="content-post">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-md-3">
+                                    <img src="{{ url_for('static', filename='assets/lifestyle/lifestyle3.jpg') }}" alt="Post" class="img-fluid rounded">
+                                </div>
+                                <div class="col-lg-10 col-md-9">
+                                    <h5 class="post-title">Morning Thoughts</h5>
+                                    <div class="post-meta">
+                                        <span class="me-3"><i class="far fa-calendar me-1"></i> 3 days ago</span>
+                                        <span class="me-3"><i class="fas fa-heart me-1"></i> 192 likes</span>
+                                        <span><i class="fas fa-comment me-1"></i> 28 comments</span>
+                                    </div>
+                                    <p>Morning thoughts: The sun rises, and with it, new possibilities. What are you looking forward to today? ☀️</p>
+                                    <div class="post-actions">
+                                        <button class="btn btn-sm btn-outline-light"><i class="fas fa-edit me-1"></i> Edit</button>
+                                        <button class="btn btn-sm btn-outline-light"><i class="fas fa-share me-1"></i> Publish</button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash me-1"></i> Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conversations Tab -->
+                <div class="tab-pane fade" id="conversations">
+                    <div class="content-card">
+                        <h2 class="section-title">User Conversations</h2>
+                        
+                        <div class="row">
+                            <!-- Conversation List -->
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control bg-dark border-dark text-light" placeholder="Search conversations...">
+                                    <button class="btn btn-outline-light"><i class="fas fa-search"></i></button>
+                                </div>
+                                
+                                <div class="conversation-list">
+                                    <div class="conversation-item active">
+                                        <div class="conversation-header">
+                                            <span class="conversation-user">Michael T.</span>
+                                            <span class="conversation-time">2 min ago</span>
+                                        </div>
+                                        <div class="conversation-preview">Hey Sophia! Thanks for the photos...</div>
+                                        <span class="language-badge">EN</span>
+                                    </div>
+                                    
+                                    <div class="conversation-item">
+                                        <div class="conversation-header">
+                                            <span class="conversation-user">Sofia M.</span>
+                                            <span class="conversation-time">25 min ago</span>
+                                        </div>
+                                        <div class="conversation-preview">¡Muchas gracias por responder en español!</div>
+                                        <span class="language-badge">ES</span>
+                                    </div>
+                                    
+                                    <div class="conversation-item">
+                                        <div class="conversation-header">
+                                            <span class="conversation-user">David R.</span>
+                                            <span class="conversation-time">1 hour ago</span>
+                                        </div>
+                                        <div class="conversation-preview">I just subscribed to the premium plan...</div>
+                                        <span class="language-badge">EN</span>
+                                    </div>
+                                    
+                                    <div class="conversation-item">
+                                        <div class="conversation-header">
+                                            <span class="conversation-user">Pierre L.</span>
+                                            <span class="conversation-time">3 hours ago</span>
+                                        </div>
+                                        <div class="conversation-preview">J'adore parler avec toi en français...</div>
+                                        <span class="language-badge">FR</span>
+                                    </div>
+                                    
+                                    <div class="conversation-item">
+                                        <div class="conversation-header">
+                                            <span class="conversation-user">Chen W.</span>
+                                            <span class="conversation-time">Yesterday</span>
+                                        </div>
+                                        <div class="conversation-preview">谢谢你用中文回复我...</div>
+                                        <span class="language-badge">ZH</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Conversation Details -->
+                            <div class="col-md-8">
+                                <div class="card h-100">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-0">Michael T.</h5>
+                                            <small class="text-muted">Premium Member · 3 months</small>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-light me-2"><i class="fas fa-user-cog"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="height: 300px; overflow-y: auto;">
+                                            <!-- Message Bubbles would go here -->
+                                            <div class="alert alert-dark text-center">
+                                                Select a conversation to view the message history
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex gap-3 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="autoRespond">
+                                                <label class="form-check-label" for="autoRespond">Auto-respond</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="translateResponses">
+                                                <label class="form-check-label" for="translateResponses">Translate responses</label>
+                                            </div>
+                                        </div>
+                                        <textarea class="form-control bg-dark border-dark text-light mb-2" rows="2" placeholder="Type a message..."></textarea>
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-outline-light">Draft Template</button>
+                                            <button class="btn btn-primary">Send Message</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Settings Tab -->
+                <div class="tab-pane fade" id="settings">
+                    <div class="content-card">
+                        <h2 class="section-title">Settings</h2>
+                        
+                        <ul class="nav nav-tabs mb-4">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#personalitySettings">Personality</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#contentSettings">Content</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#platformSettings">Platforms</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#apiSettings">API Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#paymentSettings">Payment Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#adminSettings">Admin Accounts</a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content">
+                            <!-- Personality Settings -->
+                            <div class="tab-pane fade show active" id="personalitySettings">
+                                <div class="settings-section">
+                                    <h5>Personality Traits</h5>
+                                    <p class="text-muted">Configure Sophia's personality and conversation style</p>
+                                    
+                                    <div class="mb-3">
+                                        <label for="personalityTraits" class="form-label">Traits</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="personalityTraits" value="friendly, empathetic, intelligent, creative, flirty, supportive">
+                                        <small class="form-text text-muted">Comma-separated personality traits</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="flirtLevel" class="form-label">Flirt Level: <span id="flirtLevelDisplay">5</span>/10</label>
+                                        <input type="range" class="range-slider" id="flirtLevel" min="1" max="10" value="5">
+                                        <div class="d-flex justify-content-between">
+                                            <small>Conservative</small>
+                                            <small>Balanced</small>
+                                            <small>Flirtatious</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="interestsInput" class="form-label">Interests</label>
+                                        <textarea class="form-control bg-dark border-dark text-light" id="interestsInput" rows="2">technology, art, music, travel, fitness, food, fashion, books</textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h5>Response Settings</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="responseLength" class="form-label">Response Length: <span id="responseLengthDisplay">100</span> words</label>
+                                        <input type="range" class="range-slider" id="responseLength" min="30" max="200" value="100">
+                                        <div class="d-flex justify-content-between">
+                                            <small>Brief</small>
+                                            <small>Medium</small>
+                                            <small>Detailed</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="responseStyle" class="form-label">Response Style</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="responseStyle">
+                                            <option value="positive">Positive & Uplifting</option>
+                                            <option value="balanced" selected>Balanced & Natural</option>
+                                            <option value="sultry">Sultry & Seductive</option>
+                                            <option value="playful">Playful & Joking</option>
+                                            <option value="supportive">Supportive & Caring</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary">Save Personality Settings</button>
+                            </div>
+                            
+                            <!-- Content Settings -->
+                            <div class="tab-pane fade" id="contentSettings">
+                                <div class="settings-section">
+                                    <h5>Content Generation</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="contentStyle" class="form-label">Content Style</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="contentStyle" value="inspirational, motivational, positive">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="postFrequency" class="form-label">Post Frequency: <span id="postFrequencyDisplay">1</span> per day</label>
+                                        <input type="range" class="range-slider" id="postFrequency" min="1" max="5" value="1">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Content Types</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="typePhotos" checked>
+                                            <label class="form-check-label" for="typePhotos">Photos</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="typeVideos" checked>
+                                            <label class="form-check-label" for="typeVideos">Videos</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="typeStories" checked>
+                                            <label class="form-check-label" for="typeStories">Stories</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="typeText">
+                                            <label class="form-check-label" for="typeText">Text-only posts</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h5>Image Generation</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="imageStyle" class="form-label">Image Style</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="imageStyle">
+                                            <option value="photorealistic" selected>Photorealistic</option>
+                                            <option value="artistic">Artistic</option>
+                                            <option value="cartoon">Cartoon/Anime</option>
+                                            <option value="fantasy">Fantasy</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="imageSize" class="form-label">Image Size</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="imageSize">
+                                            <option value="1024x1024" selected>1024x1024</option>
+                                            <option value="512x512">512x512</option>
+                                            <option value="768x1024">768x1024</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary">Save Content Settings</button>
+                            </div>
+                            
+                            <!-- Platform Settings -->
+                            <div class="tab-pane fade" id="platformSettings">
+                                <div class="settings-section">
+                                    <h5>Instagram Settings</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="instagramUsername" class="form-label">Username</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="instagramUsername" placeholder="Instagram username">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="instagramPassword" class="form-label">Password</label>
+                                        <input type="password" class="form-control bg-dark border-dark text-light" id="instagramPassword" placeholder="••••••••">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="hashtags" class="form-label">Hashtag Count: <span id="hashtagsDisplay">5</span></label>
+                                        <input type="range" class="range-slider" id="hashtags" min="0" max="15" value="5">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="emojiLevel" class="form-label">Emoji Usage</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="emojiLevel">
+                                            <option value="none">None</option>
+                                            <option value="minimal">Minimal</option>
+                                            <option value="medium" selected>Medium</option>
+                                            <option value="abundant">Abundant</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h5>Telegram Settings</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="telegramToken" class="form-label">Bot Token</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="telegramToken" placeholder="Telegram bot token">
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="useStickers" checked>
+                                        <label class="form-check-label" for="useStickers">Use stickers in responses</label>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="autoReply" checked>
+                                        <label class="form-check-label" for="autoReply">Auto-reply to messages</label>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary">Save Platform Settings</button>
+                            </div>
+                            
+                            <!-- API Settings Tab -->
+                            <div class="tab-pane fade" id="apiSettings">
+                                <div class="settings-section">
+                                    <h5>OpenRouter API Settings (Chat & Calls)</h5>
+                                    <p class="text-muted">Configure OpenRouter for text chat with MythoMax-L2, OpenHermes-2.5-Mistral, and Deepseek-Chat</p>
+                                    
+                                    <div class="mb-3">
+                                        <label for="openrouterApiKey" class="form-label">OpenRouter API Key</label>
+                                        <input type="password" class="form-control bg-dark border-dark text-light" id="openrouterApiKey" placeholder="Enter OpenRouter API key">
+                                        <small class="form-text text-muted">Your OpenRouter API key to access various LLM models</small>
+                                    </div>
+                                    
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="useFlirtBasedModels" checked>
+                                        <label class="form-check-label" for="useFlirtBasedModels">Intelligently Select Models Based on Flirt Level</label>
+                                        <small class="form-text text-muted d-block">When enabled, different models will be used based on flirt level settings</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="defaultModel" class="form-label">Default Model</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="defaultModel" placeholder="gryphe/mythomax-l2-13b" value="gryphe/mythomax-l2-13b">
+                                        <small class="form-text text-muted">The default model to use (MythoMax-L2)</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="mythoMaxModel" class="form-label">MythoMax-L2 Model (High Flirt 8-10)</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="mythoMaxModel" placeholder="gryphe/mythomax-l2-13b" value="gryphe/mythomax-l2-13b">
+                                        <small class="form-text text-muted">Model for high flirtiness (MythoMax-L2)</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="openHermesModel" class="form-label">OpenHermes Model (Medium Flirt 5-7)</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="openHermesModel" placeholder="teknium/openhermes-2.5-mistral" value="teknium/openhermes-2.5-mistral">
+                                        <small class="form-text text-muted">Model for medium flirtiness (OpenHermes-2.5-Mistral)</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="deepseekModel" class="form-label">Deepseek-Chat NSFW Model</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="deepseekModel" placeholder="deepseek-ai/deepseek-chat-7b-nsfw" value="deepseek-ai/deepseek-chat-7b-nsfw">
+                                        <small class="form-text text-muted">NSFW capable model (Deepseek-Chat 7B NSFW)</small>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="allowNsfw" checked>
+                                        <label class="form-check-label" for="allowNsfw">Allow NSFW content generation</label>
+                                    </div>
+                                    
+                                    <button class="btn btn-primary mb-4" data-action="save-openrouter-settings">Save Chat Models Settings</button>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h5>Voice & Audio Settings</h5>
+                                    <p class="text-muted">Configure Whisper for speech recognition and Piper for text-to-speech</p>
+                                    
+                                    <div class="mb-3">
+                                        <label for="whisperApiKey" class="form-label">Whisper API Key</label>
+                                        <input type="password" class="form-control bg-dark border-dark text-light" id="whisperApiKey" placeholder="Enter Whisper API key">
+                                        <small class="form-text text-muted">Your Whisper API key for speech recognition</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="whisperModel" class="form-label">Whisper Model</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="whisperModel" placeholder="whisper-1" value="whisper-1">
+                                        <small class="form-text text-muted">Whisper model for speech recognition</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="ttsProvider" class="form-label">TTS Provider</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="ttsProvider">
+                                            <option value="piper" selected>Piper</option>
+                                        </select>
+                                        <small class="form-text text-muted">Text-to-speech provider</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="piperVoiceId" class="form-label">Piper Voice</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="piperVoiceId">
+                                            <option value="female_natural" selected>Female (Natural)</option>
+                                            <option value="female_warm">Female (Warm)</option>
+                                            <option value="female_sultry">Female (Sultry)</option>
+                                            <option value="female_soft">Female (Soft)</option>
+                                            <option value="male_natural">Male (Natural)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="ttsSpeed" class="form-label">Speech Speed: <span id="ttsSpeedDisplay">1.0</span>x</label>
+                                        <input type="range" class="range-slider" id="ttsSpeed" min="0.5" max="2.0" step="0.1" value="1.0">
+                                        <div class="d-flex justify-content-between">
+                                            <small>Slow</small>
+                                            <small>Normal</small>
+                                            <small>Fast</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="btn btn-primary mb-4" data-action="save-voice-settings">Save Voice Settings</button>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h5>WebRTC Call Settings</h5>
+                                    <p class="text-muted">Configure WebRTC for real-time voice and video calls</p>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="enableVoiceCalls" checked>
+                                        <label class="form-check-label" for="enableVoiceCalls">Enable voice calls</label>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="useWebRTC" checked>
+                                        <label class="form-check-label" for="useWebRTC">Use WebRTC for calls</label>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="webrtcConfig" class="form-label">WebRTC Configuration</label>
+                                        <textarea class="form-control bg-dark border-dark text-light" id="webrtcConfig" rows="4">{"ice_servers": [{"urls": "stun:stun.l.google.com:19302"}]}</textarea>
+                                        <small class="form-text text-muted">JSON configuration for WebRTC</small>
+                                    </div>
+                                    
+                                    <button class="btn btn-primary mb-4" data-action="save-webrtc-settings">Save WebRTC Settings</button>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h5>Image & Video Generation Settings</h5>
+                                    <p class="text-muted">Configure Stable Diffusion, Automatic1111, and Google Colab for image and video generation</p>
+                                    
+                                    <div class="mb-3">
+                                        <label for="sdUrl" class="form-label">Stable Diffusion API URL</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="sdUrl" placeholder="http://your-automatic1111-url/api">
+                                        <small class="form-text text-muted">URL to your Automatic1111 Stable Diffusion API</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="sdModel" class="form-label">Default Model</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="sdModel">
+                                            <option value="RealisticVision" selected>RealisticVision</option>
+                                            <option value="StableDiffusion">Stable Diffusion</option>
+                                            <option value="Deliberate">Deliberate</option>
+                                        </select>
+                                        <small class="form-text text-muted">Default model for image generation</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="sdNegativePrompt" class="form-label">Default Negative Prompt</label>
+                                        <textarea class="form-control bg-dark border-dark text-light" id="sdNegativePrompt" rows="3">deformed, bad anatomy, disfigured, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands</textarea>
+                                        <small class="form-text text-muted">Default negative prompt for better image quality</small>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="sdSteps" class="form-label">Steps</label>
+                                                <input type="number" class="form-control bg-dark border-dark text-light" id="sdSteps" value="30" min="10" max="150">
+                                                <small class="form-text text-muted">Sampling steps</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="sdCfgScale" class="form-label">CFG Scale</label>
+                                                <input type="number" class="form-control bg-dark border-dark text-light" id="sdCfgScale" value="7.0" step="0.5" min="1" max="30">
+                                                <small class="form-text text-muted">Guidance scale</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="sdWidth" class="form-label">Width</label>
+                                                <input type="number" class="form-control bg-dark border-dark text-light" id="sdWidth" value="1024" step="32" min="512" max="2048">
+                                                <small class="form-text text-muted">Image width</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="sdHeight" class="form-label">Height</label>
+                                                <input type="number" class="form-control bg-dark border-dark text-light" id="sdHeight" value="1024" step="32" min="512" max="2048">
+                                                <small class="form-text text-muted">Image height</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr class="my-4">
+                                    
+                                    <h6>Google Colab Integration</h6>
+                                    <div class="mb-3">
+                                        <label for="colabNotebookUrl" class="form-label">Google Colab Notebook URL</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="colabNotebookUrl" placeholder="https://colab.research.google.com/drive/your-notebook-id">
+                                        <small class="form-text text-muted">URL to your Google Colab notebook for high-quality image generation</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="colabApiKey" class="form-label">Google Colab API Key</label>
+                                        <input type="password" class="form-control bg-dark border-dark text-light" id="colabApiKey" placeholder="Enter your Colab API key">
+                                        <small class="form-text text-muted">API key for accessing your Google Colab notebook</small>
+                                    </div>
+                                    
+                                    <button class="btn btn-primary mb-4" data-action="save-image-generation-settings">Save Image Generation Settings</button>
+                                </div>
+                                
+                                <button class="btn btn-primary" id="saveApiSettings">Save API Settings</button>
+                            </div>
+                            
+                            <!-- Payment Settings -->
+                            <div class="tab-pane fade" id="paymentSettings">
+                                <div class="settings-section">
+                                    <h5>Subscription Settings</h5>
+                                    <p class="text-muted">Configure subscription pricing and payment options</p>
+                                    
+                                    <div class="mb-3">
+                                        <label for="subscriptionFee" class="form-label">Monthly Subscription Fee ($)</label>
+                                        <input type="number" step="0.01" min="0" class="form-control bg-dark border-dark text-light" id="subscriptionFee" placeholder="9.99">
+                                        <small class="form-text text-muted">Monthly subscription fee in USD</small>
+                                    </div>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <!-- WebRTC Settings -->
+                                <div class="settings-section">
+                                    <h5>WebRTC Settings</h5>
+                                    <p class="text-muted">Configure WebRTC for voice and video calls</p>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="enableWebRTC" checked>
+                                        <label class="form-check-label" for="enableWebRTC">Enable WebRTC for calls</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- PayPal API Settings -->
+                                <div class="settings-section">
+                                    <h5>PayPal Payment Settings</h5>
+                                    <p class="text-muted">Configure PayPal integration for subscription payments</p>
+                                    
+                                    <div class="mb-3">
+                                        <label for="paypalClientId" class="form-label">PayPal Client ID</label>
+                                        <input type="text" class="form-control bg-dark border-dark text-light" id="paypalClientId" placeholder="Enter PayPal Client ID">
+                                        <small class="form-text text-muted">Your PayPal application Client ID</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="paypalClientSecret" class="form-label">PayPal Client Secret</label>
+                                        <input type="password" class="form-control bg-dark border-dark text-light" id="paypalClientSecret" placeholder="Enter PayPal Client Secret">
+                                        <small class="form-text text-muted">Your PayPal application Client Secret</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="paypalEnvironment" class="form-label">PayPal Environment</label>
+                                        <select class="form-select bg-dark border-dark text-light" id="paypalEnvironment">
+                                            <option value="sandbox" selected>Sandbox (Testing)</option>
+                                            <option value="production">Production (Live)</option>
+                                        </select>
+                                        <small class="form-text text-muted">Use Sandbox for testing, Production for real payments</small>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="paypalBusinessEmail" class="form-label">PayPal Business Email</label>
+                                        <input type="email" class="form-control bg-dark border-dark text-light" id="paypalBusinessEmail" placeholder="your-business@example.com">
+                                        <small class="form-text text-muted">Email address associated with your PayPal business account</small>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                        <button class="btn btn-primary" id="savePaypalSettings">Save PayPal Settings</button>
+                                        <button class="btn btn-outline-light" id="testPaypalConnection">Test Connection</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Admin Account Settings -->
+                            <div class="tab-pane fade" id="adminSettings">
+                                <div class="settings-section">
+                                    <h5>Admin Account Management</h5>
+                                    <p class="text-muted">Manage administrator accounts and access permissions</p>
+                                    
+                                    <!-- Admin Password Change -->
+                                    <div class="card bg-dark border-secondary mb-4">
+                                        <div class="card-header border-secondary">
+                                            <h6 class="mb-0">Change Admin Password</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="adminPasswordChangeForm">
+                                                <div class="mb-3">
+                                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                                    <input type="password" class="form-control bg-dark border-dark text-light" id="currentPassword" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">New Password</label>
+                                                    <input type="password" class="form-control bg-dark border-dark text-light" id="newPassword" required>
+                                                    <div class="form-text text-muted">Password must be at least 8 characters long with letters, numbers, and special characters.</div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                                                    <input type="password" class="form-control bg-dark border-dark text-light" id="confirmNewPassword" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Update Password</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Admin Accounts List -->
+                                    <div class="card bg-dark border-secondary mb-4">
+                                        <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0">Administrator Accounts</h6>
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAdminModal">
+                                                <i class="fas fa-plus"></i> Add Admin
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-dark table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Username</th>
+                                                            <th>Email</th>
+                                                            <th>Role</th>
+                                                            <th>Last Login</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>admin</td>
+                                                            <td>admin@example.com</td>
+                                                            <td>Super Admin</td>
+                                                            <td>Today, 9:30 AM</td>
+                                                            <td><span class="badge bg-success">Active</span></td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-sm btn-outline-light">Edit</button>
+                                                                    <button class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>moderator</td>
+                                                            <td>mod@example.com</td>
+                                                            <td>Content Moderator</td>
+                                                            <td>Yesterday</td>
+                                                            <td><span class="badge bg-success">Active</span></td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-sm btn-outline-light">Edit</button>
+                                                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>support</td>
+                                                            <td>support@example.com</td>
+                                                            <td>Support Staff</td>
+                                                            <td>May, 10 2025</td>
+                                                            <td><span class="badge bg-secondary">Inactive</span></td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-sm btn-outline-light">Edit</button>
+                                                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Role Management -->
+                                    <div class="card bg-dark border-secondary">
+                                        <div class="card-header border-secondary">
+                                            <h6 class="mb-0">Role Permissions</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0">Super Admin</h6>
+                                                    <span class="badge bg-info">Full Access</span>
+                                                </div>
+                                                <p class="small text-muted">Can perform all actions including system configuration and admin user management.</p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0">Content Moderator</h6>
+                                                    <span class="badge bg-info">Limited Access</span>
+                                                </div>
+                                                <p class="small text-muted">Can manage content and approve posts but cannot change system settings.</p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0">Support Staff</h6>
+                                                    <span class="badge bg-info">Read-only Access</span>
+                                                </div>
+                                                <p class="small text-muted">Can view analytics and user data but cannot make changes.</p>
+                                            </div>
+                                            <button class="btn btn-primary">Manage Permissions</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary mt-3" id="saveAdminSettings">Save Admin Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other tabs would be populated similarly -->
+                <div class="tab-pane fade" id="analytics">
+                    <div class="content-card">
+                        <h2 class="section-title">Analytics Dashboard</h2>
+                        
+                        <!-- Summary Stats -->
+                        <div class="row mb-4">
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon revenue">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <h3>4,285</h3>
+                                    <p>Profile Visits</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon messages">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <h3>78.3%</h3>
+                                    <p>Engagement Rate</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon content">
+                                        <i class="fas fa-share-alt"></i>
+                                    </div>
+                                    <h3>1,532</h3>
+                                    <p>Content Shares</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon subscribers">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <h3>+427</h3>
+                                    <p>New Followers (30d)</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Performance Charts -->
+                        <div class="row mb-4">
+                            <div class="col-lg-8 mb-4">
+                                <div class="card bg-dark border-dark text-light">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">Audience Growth</h5>
+                                            <div>
+                                                <select class="form-select form-select-sm bg-dark text-light border-secondary">
+                                                    <option>Last 30 days</option>
+                                                    <option>Last 90 days</option>
+                                                    <option>Last year</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="audienceGrowthChart" style="height: 300px; background: linear-gradient(45deg, rgba(255,94,142,0.2) 0%, rgba(0,0,0,0) 70%);">
+                                            <!-- We would use a real chart library here, but for now let's use a placeholder -->
+                                            <div class="d-flex flex-column justify-content-center align-items-center h-100">
+                                                <i class="fas fa-chart-area mb-3" style="font-size: 3rem; color: var(--secondary-color);"></i>
+                                                <div class="text-center">
+                                                    <h6>Followers Growth Trend (30 days)</h6>
+                                                    <p class="text-muted">5,238 → 5,665 followers (+8.2%)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="card bg-dark border-dark text-light h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Audience Demographics</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="audienceDemographics" style="height: 300px;">
+                                            <div class="mb-4">
+                                                <h6 class="mb-2">Age Groups</h6>
+                                                <div class="progress mb-1" style="height: 24px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 8%; background-color: #FF5E8E;" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100">8%</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between text-muted small">
+                                                    <span>18-24</span>
+                                                </div>
+                                                
+                                                <div class="progress mb-1 mt-2" style="height: 24px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 28%; background-color: #FF5E8E;" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100">28%</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between text-muted small">
+                                                    <span>25-34</span>
+                                                </div>
+                                                
+                                                <div class="progress mb-1 mt-2" style="height: 24px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 42%; background-color: #FF5E8E;" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">42%</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between text-muted small">
+                                                    <span>35-44</span>
+                                                </div>
+                                                
+                                                <div class="progress mb-1 mt-2" style="height: 24px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 17%; background-color: #FF5E8E;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100">17%</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between text-muted small">
+                                                    <span>45-54</span>
+                                                </div>
+                                                
+                                                <div class="progress mb-1 mt-2" style="height: 24px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 5%; background-color: #FF5E8E;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">5%</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between text-muted small">
+                                                    <span>55+</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Content Performance -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card bg-dark border-dark text-light">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">Top Performing Content</h5>
+                                            <button class="btn btn-sm btn-outline-light">Export Report</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-dark table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Post</th>
+                                                        <th>Platform</th>
+                                                        <th>Date</th>
+                                                        <th>Impressions</th>
+                                                        <th>Engagement</th>
+                                                        <th>Conversion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Morning Yoga Session</td>
+                                                        <td><i class="fab fa-instagram text-danger"></i> Instagram</td>
+                                                        <td>May 12, 2025</td>
+                                                        <td>12,485</td>
+                                                        <td>
+                                                            <div class="progress" style="height: 6px;">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 78%"></div>
+                                                            </div>
+                                                            <small class="text-muted">78% (High)</small>
+                                                        </td>
+                                                        <td>248 clicks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>New Outfit Photoshoot</td>
+                                                        <td><i class="fab fa-instagram text-danger"></i> Instagram</td>
+                                                        <td>May 8, 2025</td>
+                                                        <td>9,723</td>
+                                                        <td>
+                                                            <div class="progress" style="height: 6px;">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                                                            </div>
+                                                            <small class="text-muted">65% (Medium)</small>
+                                                        </td>
+                                                        <td>176 clicks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Beach Day Vlog</td>
+                                                        <td><i class="fab fa-telegram text-primary"></i> Telegram</td>
+                                                        <td>May 5, 2025</td>
+                                                        <td>8,127</td>
+                                                        <td>
+                                                            <div class="progress" style="height: 6px;">
+                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
+                                                            </div>
+                                                            <small class="text-muted">45% (Low)</small>
+                                                        </td>
+                                                        <td>95 clicks</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Cooking My Favorite Meal</td>
+                                                        <td><i class="fab fa-telegram text-primary"></i> Telegram</td>
+                                                        <td>May 1, 2025</td>
+                                                        <td>15,431</td>
+                                                        <td>
+                                                            <div class="progress" style="height: 6px;">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 82%"></div>
+                                                            </div>
+                                                            <small class="text-muted">82% (High)</small>
+                                                        </td>
+                                                        <td>312 clicks</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="social">
+                    <div class="content-card">
+                        <h2 class="section-title">Social Media Management</h2>
+                        
+                        <!-- Connected Accounts -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card bg-dark border-dark text-light mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                        <h5 class="mb-0">Connected Accounts</h5>
+                                        <div class="d-flex gap-2 mt-2 mt-sm-0">
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#connectAccountModal">
+                                                <i class="fas fa-plus"></i> Connect New Account
+                                            </button>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="accountFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Filter
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="accountFilterDropdown">
+                                                    <li><a class="dropdown-item active" href="#">All Accounts</a></li>
+                                                    <li><a class="dropdown-item" href="#">Paid Accounts</a></li>
+                                                    <li><a class="dropdown-item" href="#">Free Accounts</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item" href="#">Instagram</a></li>
+                                                    <li><a class="dropdown-item" href="#">Telegram</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-dark table-hover align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Platform</th>
+                                                        <th>Account</th>
+                                                        <th>Type</th>
+                                                        <th>Status</th>
+                                                        <th class="d-none d-md-table-cell">Followers</th>
+                                                        <th class="d-none d-md-table-cell">Last Posted</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <i class="fab fa-instagram text-danger fa-lg"></i>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar-sm me-2">
+                                                                    <img src="{{ url_for('static', filename='sophia_avatar.svg') }}" alt="Profile" class="rounded-circle" width="40" onerror="this.src='https://via.placeholder.com/40';this.onerror='';">
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-bold">@sophia_ai</div>
+                                                                    <small class="text-muted d-md-none">5,665 followers</small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="badge bg-warning text-dark">Paid</span></td>
+                                                        <td><span class="badge bg-success">Active</span></td>
+                                                        <td class="d-none d-md-table-cell">5,665</td>
+                                                        <td class="d-none d-md-table-cell">Today</td>
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="dropdownAccount1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Actions
+                                                                </button>
+                                                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownAccount1">
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i> Edit Account</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-paper-plane me-2"></i> Create Post</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-bar me-2"></i> View Insights</a></li>
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> Disconnect</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <i class="fab fa-telegram text-primary fa-lg"></i>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar-sm me-2">
+                                                                    <img src="{{ url_for('static', filename='sophia_avatar.svg') }}" alt="Profile" class="rounded-circle" width="40" onerror="this.src='https://via.placeholder.com/40';this.onerror='';">
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-bold">Sophia Bot</div>
+                                                                    <small class="text-muted d-md-none">3,218 followers</small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="badge bg-warning text-dark">Paid</span></td>
+                                                        <td><span class="badge bg-success">Active</span></td>
+                                                        <td class="d-none d-md-table-cell">3,218</td>
+                                                        <td class="d-none d-md-table-cell">Yesterday</td>
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="dropdownAccount2" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Actions
+                                                                </button>
+                                                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownAccount2">
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i> Edit Account</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-paper-plane me-2"></i> Create Post</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-bar me-2"></i> View Insights</a></li>
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> Disconnect</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <i class="fab fa-twitter text-info fa-lg"></i>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar-sm me-2">
+                                                                    <img src="{{ url_for('static', filename='sophia_avatar.svg') }}" alt="Profile" class="rounded-circle" width="40" onerror="this.src='https://via.placeholder.com/40';this.onerror='';">
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-bold">@sophia_official</div>
+                                                                    <small class="text-muted d-md-none">1,845 followers</small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="badge bg-secondary">Free</span></td>
+                                                        <td><span class="badge bg-success">Active</span></td>
+                                                        <td class="d-none d-md-table-cell">1,845</td>
+                                                        <td class="d-none d-md-table-cell">2 days ago</td>
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="dropdownAccount3" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Actions
+                                                                </button>
+                                                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownAccount3">
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i> Edit Account</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-paper-plane me-2"></i> Create Post</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-bar me-2"></i> View Insights</a></li>
+                                                                    <li><a class="dropdown-item text-warning" href="#"><i class="fas fa-crown me-2"></i> Upgrade to Paid</a></li>
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> Disconnect</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Account Connection Modal -->
+                        <div class="modal fade" id="connectAccountModal" tabindex="-1" aria-labelledby="connectAccountModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content bg-dark text-light border-secondary">
+                                    <div class="modal-header border-secondary">
+                                        <h5 class="modal-title" id="connectAccountModalLabel">Connect Social Media Account</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="platformSelect" class="form-label">Select Platform</label>
+                                            <select class="form-select bg-dark text-light border-secondary" id="platformSelect">
+                                                <option selected>Choose platform...</option>
+                                                <option value="instagram">Instagram</option>
+                                                <option value="telegram">Telegram</option>
+                                                <option value="twitter">Twitter</option>
+                                                <option value="facebook">Facebook</option>
+                                                <option value="tiktok">TikTok</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountType" class="form-label">Account Type</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="accountType" id="paidAccount" value="paid" checked>
+                                                <label class="form-check-label" for="paidAccount">
+                                                    Paid Account <span class="badge bg-warning text-dark ms-2">Premium</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="accountType" id="freeAccount" value="free">
+                                                <label class="form-check-label" for="freeAccount">
+                                                    Free Account <span class="badge bg-secondary ms-2">Limited</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountUsername" class="form-label">Username</label>
+                                            <input type="text" class="form-control bg-dark text-light border-secondary" id="accountUsername" placeholder="Enter username">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountToken" class="form-label">API Token/Key</label>
+                                            <input type="password" class="form-control bg-dark text-light border-secondary" id="accountToken" placeholder="Enter API token">
+                                            <div class="form-text text-muted">This is required to authenticate with the platform.</div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-secondary">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Connect Account</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Content Calendar -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card bg-dark border-dark text-light">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Content Calendar</h5>
+                                        <div>
+                                            <button class="btn btn-sm btn-primary me-2">
+                                                <i class="fas fa-plus"></i> New Post
+                                            </button>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-light active">Week</button>
+                                                <button class="btn btn-sm btn-outline-light">Month</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-4">
+                                            <!-- Calendar days -->
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Mon</strong><br>
+                                                    <small class="text-muted">May 15</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark position-relative" style="min-height: 150px;">
+                                                    <div class="calendar-event p-2 rounded mb-2" style="background-color: rgba(255, 94, 142, 0.2); border-left: 3px solid #FF5E8E;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-instagram text-danger"></i></small>
+                                                            <small>9:00 AM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>Morning Yoga Session</small></div>
+                                                    </div>
+                                                    <div class="calendar-event p-2 rounded" style="background-color: rgba(52, 152, 219, 0.2); border-left: 3px solid #3498db;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-telegram text-primary"></i></small>
+                                                            <small>5:30 PM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>Cooking Stream Announcement</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Tue</strong><br>
+                                                    <small class="text-muted">May 16</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark" style="min-height: 150px;">
+                                                    <div class="calendar-event p-2 rounded" style="background-color: rgba(46, 204, 113, 0.2); border-left: 3px solid #2ecc71;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-instagram text-danger"></i></small>
+                                                            <small>2:00 PM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>Q&A Session</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Wed</strong><br>
+                                                    <small class="text-muted">May 17</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark" style="min-height: 150px;">
+                                                    <div class="calendar-event p-2 rounded mb-2" style="background-color: rgba(52, 152, 219, 0.2); border-left: 3px solid #3498db;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-telegram text-primary"></i></small>
+                                                            <small>11:00 AM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>Weekly Update</small></div>
+                                                    </div>
+                                                    <div class="calendar-event p-2 rounded" style="background-color: rgba(255, 94, 142, 0.2); border-left: 3px solid #FF5E8E;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-instagram text-danger"></i></small>
+                                                            <small>4:00 PM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>New Outfit Reveal</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Thu</strong><br>
+                                                    <small class="text-muted">May 18</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark" style="min-height: 150px;">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Fri</strong><br>
+                                                    <small class="text-muted">May 19</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark" style="min-height: 150px;">
+                                                    <div class="calendar-event p-2 rounded" style="background-color: rgba(155, 89, 182, 0.2); border-left: 3px solid #9b59b6;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-instagram text-danger"></i></small>
+                                                            <small>7:00 PM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>Evening Meditation Live</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Sat</strong><br>
+                                                    <small class="text-muted">May 20</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark" style="min-height: 150px;">
+                                                    <div class="calendar-event p-2 rounded" style="background-color: rgba(52, 152, 219, 0.2); border-left: 3px solid #3498db;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <small><i class="fab fa-telegram text-primary"></i></small>
+                                                            <small>1:00 PM</small>
+                                                        </div>
+                                                        <div class="mt-1"><small>Weekend Special</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col">
+                                                <div class="text-center mb-2">
+                                                    <strong>Sun</strong><br>
+                                                    <small class="text-muted">May 21</small>
+                                                </div>
+                                                <div class="calendar-slot p-2 rounded border border-secondary bg-dark" style="min-height: 150px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post Schedule Configuration -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card bg-dark border-dark text-light">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Post Schedule Configuration</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="autoScheduleSwitch" checked>
+                                            <label class="form-check-label" for="autoScheduleSwitch">Auto-scheduling</label>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="postScheduleForm">
+                                            <div class="row">
+                                                <!-- Post Frequency Section -->
+                                                <div class="col-md-6 mb-4">
+                                                    <h6 class="mb-3">Post Frequency</h6>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="totalPostsPerDay" class="form-label">Total Posts Per Day</label>
+                                                        <input type="number" class="form-control bg-dark text-light" id="totalPostsPerDay" min="0" max="10" value="2">
+                                                        <div class="form-text text-muted">Maximum number of posts to create each day</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="imagesPerDay" class="form-label">Images Per Day</label>
+                                                        <input type="number" class="form-control bg-dark text-light" id="imagesPerDay" min="0" max="10" value="1">
+                                                        <div class="form-text text-muted">Number of image posts to create daily</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="reelsPerDay" class="form-label">Reels/Videos Per Day</label>
+                                                        <input type="number" class="form-control bg-dark text-light" id="reelsPerDay" min="0" max="10" value="1">
+                                                        <div class="form-text text-muted">Number of reel/video posts to create daily</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Post Timing Section -->
+                                                <div class="col-md-6 mb-4">
+                                                    <h6 class="mb-3">Post Timing</h6>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="postTimeStart" class="form-label">Posting Start Time</label>
+                                                        <select class="form-select bg-dark text-light" id="postTimeStart">
+                                                            {% for i in range(0, 24) %}
+                                                            <option value="{{ i }}" {% if i == 9 %}selected{% endif %}>{{ "%02d:00"|format(i) }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <div class="form-text text-muted">Start posting from this hour</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="postTimeEnd" class="form-label">Posting End Time</label>
+                                                        <select class="form-select bg-dark text-light" id="postTimeEnd">
+                                                            {% for i in range(0, 24) %}
+                                                            <option value="{{ i }}" {% if i == 21 %}selected{% endif %}>{{ "%02d:00"|format(i) }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <div class="form-text text-muted">Stop posting after this hour</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Post on Days</label>
+                                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                                            {% set days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] %}
+                                                            {% for i in range(0, 7) %}
+                                                            <div class="form-check">
+                                                                <input class="form-check-input post-day-checkbox" type="checkbox" value="{{ i }}" id="day{{ i }}" checked>
+                                                                <label class="form-check-label" for="day{{ i }}">{{ days[i] }}</label>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Save Button -->
+                                                <div class="col-12 text-end">
+                                                    <button type="button" class="btn btn-primary" id="saveScheduleBtn">
+                                                        <i class="fas fa-save me-2"></i> Save Schedule
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post Queue -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card bg-dark border-dark text-light">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Post Queue</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="autoPostSwitch" checked>
+                                            <label class="form-check-label" for="autoPostSwitch">Auto-posting</label>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-dark table-hover" id="postQueueTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 50px;"></th>
+                                                        <th>Content</th>
+                                                        <th>Platform</th>
+                                                        <th>Scheduled</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Table body will be populated dynamically by loadPostQueue() in admin.js -->
+                                                    <tr>
+                                                        <td colspan="6" class="text-center py-4">
+                                                            <div class="d-flex flex-column align-items-center">
+                                                                <i class="fas fa-clock fa-3x text-muted mb-3"></i>
+                                                                <h6 class="mb-1">Loading scheduled posts...</h6>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                                <button type="button" class="btn btn-outline-primary" id="refreshPostQueueBtn">
+                                                    <i class="fas fa-sync-alt me-2"></i> Refresh Queue
+                                                </button>
+                                                <div>
+                                                    <button type="button" class="btn btn-success" id="publishNowBtn">
+                                                        <i class="fas fa-paper-plane me-2"></i> Publish Selected Now
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="me-3 bg-dark rounded" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color);">
+                                                                    <i class="fas fa-image fa-lg text-muted"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-bold">Evening Meditation Live</div>
+                                                                    <small class="text-muted d-block">Join me for a relaxing evening meditation session...</small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><i class="fab fa-instagram text-danger"></i> Instagram</td>
+                                                        <td>May 19, 7:00 PM</td>
+                                                        <td><span class="badge bg-warning text-dark">Scheduled</span></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-outline-light">Edit</button>
+                                                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Admin Modal -->
+<div class="modal fade" id="addAdminModal" tabindex="-1" aria-labelledby="addAdminModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="addAdminModalLabel">Add Administrator Account</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addAdminForm">
+                    <div class="mb-3">
+                        <label for="adminUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary" id="adminUsername" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adminEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control bg-dark text-light border-secondary" id="adminEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adminPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control bg-dark text-light border-secondary" id="adminPassword" required>
+                        <div class="form-text text-muted">Password must be at least 8 characters long with letters, numbers, and special characters.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adminRole" class="form-label">Role</label>
+                        <select class="form-select bg-dark text-light border-secondary" id="adminRole">
+                            <option selected>Choose role...</option>
+                            <option value="super_admin">Super Admin</option>
+                            <option value="content_moderator">Content Moderator</option>
+                            <option value="support_staff">Support Staff</option>
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="sendWelcomeEmail" checked>
+                        <label class="form-check-label" for="sendWelcomeEmail">
+                            Send welcome email with login credentials
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Add Administrator</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fix for sidebar menu tabs
+        const sidebarLinks = document.querySelectorAll('.sidebar-menu li a[role="tab"]');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        
+        // Load social media settings
+        loadSocialMediaSettings();
+        
+        // Set up event listener for save schedule button
+        document.getElementById('saveScheduleBtn').addEventListener('click', savePostSchedule);
+        
+        function activateTab(tabId) {
+            // Hide all tab panes
+            tabPanes.forEach(pane => {
+                pane.classList.remove('show', 'active');
+            });
+            
+            // Show the selected tab pane
+            const selectedPane = document.getElementById(tabId);
+            if (selectedPane) {
+                selectedPane.classList.add('show', 'active');
+            }
+            
+            // Update active state in sidebar
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + tabId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Save the active tab to session storage
+            sessionStorage.setItem('activeAdminTab', tabId);
+        }
+        
+        // Add click handlers to all sidebar links
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('href').substring(1);
+                activateTab(tabId);
+            });
+        });
+        
+        // Restore active tab from session storage
+        const savedTab = sessionStorage.getItem('activeAdminTab');
+        if (savedTab) {
+            activateTab(savedTab);
+        }
+        
+        // Admin Settings Functionality
+        const adminPasswordForm = document.getElementById('adminPasswordChangeForm');
+        if (adminPasswordForm) {
+            adminPasswordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmNewPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    alert('New passwords do not match!');
+                    return;
+                }
+                
+                // Display success message (in a real app, this would be an API call)
+                alert('Password updated successfully!');
+                this.reset();
+            });
+        }
+        
+        // Add Admin Form Handling
+        const addAdminForm = document.getElementById('addAdminForm');
+        if (addAdminForm) {
+            const addAdminButton = addAdminForm.parentElement.nextElementSibling.querySelector('.btn-primary');
+            addAdminButton.addEventListener('click', function() {
+                if (!addAdminForm.checkValidity()) {
+                    addAdminForm.reportValidity();
+                    return;
+                }
+                
+                // In a real application, this would be an API call
+                alert('Administrator account created successfully!');
+                
+                // Close the modal and reset form
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addAdminModal'));
+                modal.hide();
+                addAdminForm.reset();
+            });
+        }
+        
+        // Post Schedule Functions
+        function loadSocialMediaSettings() {
+            fetch('/api/settings')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Loaded settings:', data);
+                    // Update post schedule form
+                    document.getElementById('totalPostsPerDay').value = data.post_frequency || 2;
+                    document.getElementById('imagesPerDay').value = data.images_per_day || 1;
+                    document.getElementById('reelsPerDay').value = data.reels_per_day || 1;
+                    document.getElementById('postTimeStart').value = data.post_time_start || 9;
+                    document.getElementById('postTimeEnd').value = data.post_time_end || 21;
+                    
+                    // Update day checkboxes
+                    if (data.post_days) {
+                        const selectedDays = data.post_days.split(',').map(day => parseInt(day.trim()));
+                        document.querySelectorAll('.post-day-checkbox').forEach(checkbox => {
+                            checkbox.checked = selectedDays.includes(parseInt(checkbox.value));
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading settings:', error);
+                    showNotification('Error loading settings. Please try again.', 'danger');
+                });
+        }
+        
+        function savePostSchedule() {
+            // Get values from form
+            const totalPostsPerDay = parseInt(document.getElementById('totalPostsPerDay').value);
+            const imagesPerDay = parseInt(document.getElementById('imagesPerDay').value);
+            const reelsPerDay = parseInt(document.getElementById('reelsPerDay').value);
+            const postTimeStart = parseInt(document.getElementById('postTimeStart').value);
+            const postTimeEnd = parseInt(document.getElementById('postTimeEnd').value);
+            
+            // Get selected days
+            const selectedDays = [];
+            document.querySelectorAll('.post-day-checkbox:checked').forEach(checkbox => {
+                selectedDays.push(checkbox.value);
+            });
+            
+            // Validate data
+            if (imagesPerDay + reelsPerDay !== totalPostsPerDay) {
+                showNotification('The sum of images and reels per day must equal the total posts per day.', 'warning');
+                return;
+            }
+            
+            // Prepare data for API
+            const data = {
+                post_frequency: totalPostsPerDay,
+                images_per_day: imagesPerDay,
+                reels_per_day: reelsPerDay,
+                post_time_start: postTimeStart,
+                post_time_end: postTimeEnd,
+                post_days: selectedDays.join(',')
+            };
+            
+            // Save settings
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Post schedule saved successfully!', 'success');
+                } else {
+                    showNotification('Error saving post schedule: ' + (result.error || 'Unknown error'), 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving settings:', error);
+                showNotification('Error saving settings. Please try again.', 'danger');
+            });
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element if it doesn't exist
+            let notificationContainer = document.getElementById('notification-container');
+            if (!notificationContainer) {
+                notificationContainer = document.createElement('div');
+                notificationContainer.id = 'notification-container';
+                notificationContainer.style.position = 'fixed';
+                notificationContainer.style.top = '20px';
+                notificationContainer.style.right = '20px';
+                notificationContainer.style.zIndex = '9999';
+                document.body.appendChild(notificationContainer);
+            }
+            
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show`;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Add to container
+            notificationContainer.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notificationContainer.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+        
+        // Social Media Account Filtering
+        const accountFilterDropdown = document.getElementById('accountFilterDropdown');
+        if (accountFilterDropdown) {
+            const filterOptions = accountFilterDropdown.nextElementSibling.querySelectorAll('.dropdown-item');
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all options
+                    filterOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Update dropdown button text
+                    accountFilterDropdown.textContent = this.textContent;
+                    
+                    // Actual filtering would go here in a real application
+                    // For now, just show a message
+                    console.log(`Filtering by: ${this.textContent}`);
+                });
+            });
+        }
+        
+        // Flirt Level slider
+        const flirtLevel = document.getElementById('flirtLevel');
+        const flirtLevelDisplay = document.getElementById('flirtLevelDisplay');
+        
+        if (flirtLevel && flirtLevelDisplay) {
+            flirtLevel.addEventListener('input', function() {
+                flirtLevelDisplay.textContent = this.value;
+            });
+        }
+        
+        // Response Length slider
+        const responseLength = document.getElementById('responseLength');
+        const responseLengthDisplay = document.getElementById('responseLengthDisplay');
+        
+        if (responseLength && responseLengthDisplay) {
+            responseLength.addEventListener('input', function() {
+                responseLengthDisplay.textContent = this.value;
+            });
+        }
+        
+        // Post Frequency slider
+        const postFrequency = document.getElementById('postFrequency');
+        const postFrequencyDisplay = document.getElementById('postFrequencyDisplay');
+        
+        if (postFrequency && postFrequencyDisplay) {
+            postFrequency.addEventListener('input', function() {
+                postFrequencyDisplay.textContent = this.value;
+            });
+        }
+        
+        // Hashtag Count slider
+        const hashtags = document.getElementById('hashtags');
+        const hashtagsDisplay = document.getElementById('hashtagsDisplay');
+        
+        if (hashtags && hashtagsDisplay) {
+            hashtags.addEventListener('input', function() {
+                hashtagsDisplay.textContent = this.value;
+            });
+        }
+        
+        // PayPal settings
+        const savePaypalSettings = document.getElementById('savePaypalSettings');
+        const testPaypalConnection = document.getElementById('testPaypalConnection');
+        
+        if (savePaypalSettings) {
+            savePaypalSettings.addEventListener('click', function() {
+                // Get values from form
+                const clientId = document.getElementById('paypalClientId').value;
+                const clientSecret = document.getElementById('paypalClientSecret').value;
+                const environment = document.getElementById('paypalEnvironment').value;
+                const businessEmail = document.getElementById('paypalBusinessEmail').value;
+                const subscriptionFee = document.getElementById('subscriptionFee').value;
+                
+                // Create data object
+                const data = {
+                    paypal_client_id: clientId,
+                    paypal_client_secret: clientSecret,
+                    paypal_environment: environment,
+                    paypal_business_email: businessEmail,
+                    subscription_fee: subscriptionFee
+                };
+                
+                // Send to server
+                fetch('/api/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('PayPal settings saved successfully!');
+                })
+                .catch(error => {
+                    console.error('Error saving PayPal settings:', error);
+                    alert('Error saving PayPal settings. Please try again.');
+                });
+            });
+        }
+        
+        if (testPaypalConnection) {
+            testPaypalConnection.addEventListener('click', function() {
+                // Show spinner
+                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Testing...';
+                this.disabled = true;
+                
+                // Test connection
+                fetch('/paypal/setup')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.clientToken) {
+                            alert('PayPal connection successful! Client token received.');
+                        } else {
+                            alert('PayPal connection test failed. Please check your settings.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error testing PayPal connection:', error);
+                        alert('Error testing PayPal connection. Please check your API keys and try again.');
+                    })
+                    .finally(() => {
+                        // Reset button
+                        this.innerHTML = 'Test Connection';
+                        this.disabled = false;
+                    });
+            });
+        }
+        
+        // Load existing PayPal settings when the tab is shown
+        document.querySelector('a[data-bs-toggle="tab"][href="#paymentSettings"]').addEventListener('show.bs.tab', function() {
+            fetch('/api/settings')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Populate fields with existing values
+                    if (data.paypal_client_id) document.getElementById('paypalClientId').value = data.paypal_client_id;
+                    if (data.paypal_client_secret) document.getElementById('paypalClientSecret').value = data.paypal_client_secret;
+                    if (data.paypal_environment) document.getElementById('paypalEnvironment').value = data.paypal_environment;
+                    if (data.paypal_business_email) document.getElementById('paypalBusinessEmail').value = data.paypal_business_email;
+                    if (data.subscription_fee) document.getElementById('subscriptionFee').value = data.subscription_fee;
+                })
+                .catch(error => {
+                    console.error('Error loading PayPal settings:', error);
+                });
+        });
+    });
+</script>
+{% endblock %}
